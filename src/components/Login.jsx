@@ -1,22 +1,18 @@
 import React, { useContext, useEffect } from "react";
 
 import { StoreContext } from "../store/store";
-import { withRouter } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 import firebase from "firebase/app";
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 import "firebase/auth";
 
-export default withRouter((props) => {
+function Login() {
   const { state } = useContext(StoreContext);
+  let history = useHistory();
 
   useEffect(() => {
-    var unregisterAuthObserver = state.firebaseApp
-      .auth()
-      .onAuthStateChanged((user) => {
-        if (user) props.history.push("/home");
-      });
-    return unregisterAuthObserver;
+    if (state.user) history.push("/home");
   });
 
   const uiConfig = {
@@ -35,4 +31,6 @@ export default withRouter((props) => {
       />
     </div>
   );
-});
+}
+
+export default Login;

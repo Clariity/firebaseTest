@@ -1,0 +1,76 @@
+.recipe-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.list-item {
+  background-color: #e7e6e6;
+  color: black;
+  display: flex;
+  flex-direction: row;
+  width: 90vw;
+  max-width: 800px;
+  border-radius: 12px;
+  margin: 5px;
+  padding: 15px;
+  align-self: center;
+}
+.list-item:hover {
+  cursor: pointer;
+  background-color: #b8b8b8;
+}
+
+.list-item-image {
+  border-radius: 12px;
+  height: 200px;
+  width: 200px;
+  object-fit: contain;
+  border-color: #7f7f7f;
+  border: solid 1px;
+}
+
+.list-item-details {
+  flex-grow: 1;
+  text-align: left;
+  margin: 0px 15px;
+  font-size: 1.2rem;
+}
+
+.recipe-name {
+  font-size: 1.5rem;
+}
+.recipe-name:hover {
+  cursor: text;
+}
+
+.list-item-tags {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.recipe-tag {
+  background-color: #ffb902;
+  margin: 10px 10px 5px 0px;
+  padding: 5px 15px;
+  border-radius: 5px;
+  border-color: #7f7f7f;
+  border: solid 1px;
+}
+.recipe-tag:hover {
+  cursor: pointer;
+  background-color: #d69a01;
+}
+
+.list-item-pin-container {
+  width: 50px;
+}
+
+.list-item-pin-button {
+  transform: rotate(-45deg);
+  font-size: 2rem;
+}
+.list-item-pin-button:hover {
+  cursor: pointer;
+  color: #7f7f7f;
+}

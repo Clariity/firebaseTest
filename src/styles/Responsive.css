@@ -1,0 +1,14 @@
+@media (max-width: 700px) {
+  .list-item-image {
+    height: 150px;
+    width: 150px;
+  }
+}
+
+@media (max-width: 500px) {
+  .list-item {
+    flex-direction: column;
+    align-items: center;
+    width: unset;
+  }
+}
