@@ -189,7 +189,7 @@ function Add() {
     const recipeStructure = {
       ...newRecipe,
       tags: tags,
-      pinned: false,
+      pinned: newRecipe.pinned !== undefined ? newRecipe.pinned : false,
       imageURL: downloadURL, // set to photoURL in function arguments, this is set on component load when identified as current recipe
       lastUpdated: new Date(),
     };
