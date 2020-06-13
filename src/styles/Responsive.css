@@ -3,6 +3,46 @@
     height: 150px;
     width: 150px;
   }
+
+  .navbar {
+    height: 34px;
+    max-height: 34px;
+  }
+  .navbar-image {
+    width: 34px;
+    height: 34px;
+    margin-left: 10px;
+  }
+  .navbar-title {
+    font-size: 1.2rem;
+    padding-left: 15px;
+    height: 34px;
+  }
+  .add-recipe-button,
+  .search-button {
+    font-size: 31px;
+    margin-right: 10px;
+  }
+  .navbar-image,
+  .navbar-title,
+  .add-recipe-button,
+  .search-button {
+    border-top: 3px solid #222a35;
+  }
+  .navbar-selected {
+    border-top: 3px solid #d69a01;
+  }
+
+  .recipe-list > h1 {
+    font-size: 1.1rem;
+  }
+
+  .form-top {
+    flex-direction: column;
+  }
+  .form-top > div {
+    width: 100%;
+  }
 }
 
 @media (max-width: 500px) {
@@ -10,5 +50,24 @@
     flex-direction: column;
     align-items: center;
     width: unset;
+    max-width: 90vw;
+  }
+  .list-item-details {
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  .search-button-s {
+    font-size: 1rem;
+  }
+
+  .form-top-servings-cooking,
+  .upload-button-group {
+    flex-direction: column;
+    align-self: center;
+  }
+  .upload-button,
+  .reset-button,
+  .discard-button {
+    width: 30vw;
   }
 }

@@ -1,22 +1,25 @@
 import React, { useContext, useEffect, useState } from "react";
 import { StoreContext, ActionType } from "../store/store";
 import { useHistory, useLocation } from "react-router-dom";
-import FormTop from "./FormComponents/FormTop";
-import FormBottom from "./FormComponents/FormBottom";
+import FormTop from "./Form/FormTop";
+import FormBottom from "./Form/FormBottom";
 import OverwriteModal from "./Modals/OverwriteModal";
 import DeleteModal from "./Modals/DeleteModal";
 import ResetModal from "./Modals/ResetModal";
 import NoPictureModal from "./Modals/NoPictureModal";
+import ErrorModal from "./Modals/ErrorModal";
 
 function Add() {
   const { state, dispatch } = useContext(StoreContext);
   const [tagsSelected, setTagsSelected] = useState([]);
   const [selectedFile, setSelectedFile] = useState(null);
   const [photoURL, setPhotoURL] = useState(null);
+  const [initialRecipeName, setInitialRecipeName] = useState("");
   const [showOverwriteModal, setShowOverwriteModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showNoPictureModal, setShowNoPictureModal] = useState(false);
   const [showResetModal, setShowResetModal] = useState(false);
+  const [showErrorModal, setShowErrorModal] = useState(false);
   const [newRecipe, setNewRecipe] = useState({
     name: "",
     servings: 0,
@@ -47,8 +50,11 @@ function Add() {
   let history = useHistory();
   let location = useLocation();
 
+  console.log(state.user);
+
   // need to reset fields on history change
   useEffect(() => {
+    if (state.user === null) history.push("/");
     const params = new URLSearchParams(location.search);
     const recipeName = params.get("r");
     if (recipeName === null) {
@@ -64,13 +70,14 @@ function Add() {
             type: ActionType.SET_TITLE,
             payload: state.userData.recipes[r].name,
           });
+          setInitialRecipeName(state.userData.recipes[r].name);
           setNewRecipe(state.userData.recipes[r]);
           setPhotoURL(state.userData.recipes[r].imageURL); // This value is null if no image uploaded
           setTagsSelected(state.userData.recipes[r].tags);
         }
       }
     }
-  }, [dispatch, state.userData, location.search]);
+  }, [dispatch, state.userData, location.search, history, state.user]);
 
   function handleChange(event) {
     setNewRecipe({
@@ -92,8 +99,37 @@ function Add() {
     return [false, 0];
   }
 
+  function getRecipeIndex() {
+    if (newRecipe.name !== initialRecipeName) return "error";
+    for (let r in state.userData.recipes) {
+      if (
+        state.userData.recipes[r].name.replace(/\s/g, "").toLowerCase() ===
+        newRecipe.name.replace(/\s/g, "").toLowerCase()
+      ) {
+        return r;
+      }
+    }
+    // will only be reached if user has clicked on recipe and then changed it's name
+    return "error";
+  }
+
   const deleteRecipe = () => {
-    console.log("delete");
+    let i = getRecipeIndex();
+    if (i === "error") {
+      setShowErrorModal(true);
+      return;
+    }
+    let recipes = [];
+    let newRecipes = [...state.userData.recipes];
+    newRecipes.splice(i, 1);
+    recipes = newRecipes;
+    state.firebaseApp.firestore().collection("users").doc(state.user.uid).set(
+      {
+        recipes: recipes,
+      },
+      { merge: true }
+    );
+    history.push("/home");
   };
 
   const resetRecipe = () => {
@@ -153,7 +189,7 @@ function Add() {
     const recipeStructure = {
       ...newRecipe,
       tags: tags,
-      pinned: true, //just for testing, change back to false by default
+      pinned: false,
       imageURL: downloadURL, // set to photoURL in function arguments, this is set on component load when identified as current recipe
       lastUpdated: new Date(),
     };
@@ -287,6 +323,11 @@ function Add() {
         recipeName={newRecipe.name}
         resetRecipe={resetRecipe}
       />
+      <ErrorModal
+        showErrorModal={showErrorModal}
+        setShowErrorModal={setShowErrorModal}
+        recipeName={initialRecipeName}
+      />
       <div className="add-container">
         <FormTop
           newRecipe={newRecipe}
@@ -304,24 +345,36 @@ function Add() {
           handleChange={handleChange}
         />
         <div className="upload-button-group">
-          <button
-            className="upload-button"
-            onClick={handleUpload}
-            disabled={validateFields()}
-          >
-            Upload
-          </button>
-          <div className="reset-button" onClick={() => setShowResetModal(true)}>
-            Reset
+          <div className="button-group-1">
+            <button
+              className="upload-button"
+              onClick={handleUpload}
+              disabled={validateFields()}
+            >
+              Upload
+            </button>
+            <div
+              className="reset-button"
+              onClick={() => setShowResetModal(true)}
+            >
+              Reset
+            </div>
           </div>
-          <div
-            className="discard-button"
-            onClick={() => setShowDeleteModal(true)}
-          >
-            Delete
-          </div>
-          <div className="discard-button" onClick={() => history.push("/home")}>
-            Cancel
+          <div className="button-group-2">
+            {new URLSearchParams(location.search).get("r") !== null && (
+              <div
+                className="discard-button"
+                onClick={() => setShowDeleteModal(true)}
+              >
+                Delete
+              </div>
+            )}
+            <div
+              className="discard-button"
+              onClick={() => history.push("/home")}
+            >
+              Cancel
+            </div>
           </div>
         </div>
       </div>

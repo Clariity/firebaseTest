@@ -4,3 +4,7 @@
   min-height: 100vh;
   color: white;
 }
+
+html {
+  background-color: #222a35;
+}

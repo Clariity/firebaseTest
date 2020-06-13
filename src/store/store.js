@@ -6,13 +6,15 @@ const ActionType = {
   SET_USER: "SET_USER",
   SET_TITLE: "SET_TITLE",
   SET_USER_DATA: "SET_USER_DATA",
+  SET_AUTH_LOADED: "SET_AUTH_LOADED",
 };
 
 const intialState = {
   firebaseApp: firebase,
   user: null,
-  title: "Nom Network",
+  title: "Home",
   userData: {},
+  authLoaded: false,
 };
 const StoreContext = React.createContext(intialState);
 
@@ -27,6 +29,8 @@ const StateProvider = ({ children }) => {
         return { ...state, title: action.payload };
       case ActionType.SET_USER_DATA:
         return { ...state, userData: action.payload };
+      case ActionType.SET_AUTH_LOADED:
+        return { ...state, authLoaded: action.payload };
       default:
         throw new Error(`Unhandled ActionType ${action.type}`);
     }

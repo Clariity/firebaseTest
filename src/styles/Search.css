@@ -74,3 +74,19 @@
   background-color: #d69a01;
   align-self: center;
 }
+.back-to-search:hover {
+  background-color: #b17f00;
+}
+
+input[type="checkbox"] {
+  position: relative;
+}
+
+.form-check {
+  display: flex !important;
+  margin-top: 10px;
+  padding-left: 10px !important;
+}
+.form-check > input {
+  align-self: center;
+}

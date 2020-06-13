@@ -7,6 +7,11 @@ function Navbar() {
   let location = useLocation();
   let history = useHistory();
 
+  const handleSignOut = () => {
+    state.firebaseApp.auth().signOut();
+    // history.push("/");
+  };
+
   return (
     <div className="navbar">
       <img
@@ -26,26 +31,37 @@ function Navbar() {
       >
         {state.title}
       </div>
-      <div
-        className={
-          "material-icons add-recipe-button " +
-          (location.pathname === "/add" ? "navbar-selected" : "")
-        }
-        data-tip="Add new recipe"
-        onClick={() => history.push("/add")}
-      >
-        add
-      </div>
-      <div
-        className={
-          "material-icons search-button " +
-          (location.pathname === "/search" ? "navbar-selected" : "")
-        }
-        data-tip="Search for recipe"
-        onClick={() => history.push("/search")}
-      >
-        search
-      </div>
+      {state.user !== null && (
+        <>
+          <div
+            className={
+              "material-icons add-recipe-button " +
+              (location.pathname === "/add" ? "navbar-selected" : "")
+            }
+            data-tip="Add new recipe"
+            onClick={() => history.push("/add")}
+          >
+            add
+          </div>
+          <div
+            className={
+              "material-icons search-button " +
+              (location.pathname === "/search" ? "navbar-selected" : "")
+            }
+            data-tip="Search for recipe"
+            onClick={() => history.push("/search")}
+          >
+            search
+          </div>
+          <div
+            className={"material-icons search-button "}
+            data-tip="Sign Out"
+            onClick={handleSignOut}
+          >
+            exit_to_app
+          </div>
+        </>
+      )}
     </div>
   );
 }

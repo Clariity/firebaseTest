@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { StoreContext, ActionType } from "../store/store";
+import { Form } from "react-bootstrap";
 import { Typeahead } from "react-bootstrap-typeahead";
 import { useLocation, useHistory } from "react-router-dom";
 
@@ -9,12 +10,13 @@ function Search() {
   const [recipeNames, setRecipeNames] = useState([]);
   const [componentParams, setComponentParams] = useState(null);
   const [searchType, setSearchType] = useState("r");
-  const [combineTags, setCombineTags] = useState(true);
+  const [combineTags, setCombineTags] = useState(false);
   const [tagsSelected, setTagsSelected] = useState([]);
   let location = useLocation();
   let history = useHistory();
 
   useEffect(() => {
+    if (state.user === null) history.push("/");
     dispatch({ type: ActionType.SET_TITLE, payload: "Search" });
     const params = new URLSearchParams(location.search);
     setComponentParams(params);
@@ -70,7 +72,7 @@ function Search() {
 
     setFoundRecipes(newFoundRecipes);
     setRecipeNames(newRecipeNames);
-  }, [dispatch, state.userData, location.search]);
+  }, [dispatch, state.userData, location.search, history, state.user]);
 
   const handleSearchTags = () => {
     let urlString = "/search?m=";
@@ -156,6 +158,13 @@ function Search() {
             </div>
           )}
         </div>
+        {searchType === "t" && (
+          <Form.Check
+            checked={combineTags}
+            onChange={(e) => setCombineTags(e.target.checked)}
+            label="Combo-Tags"
+          />
+        )}
       </div>
     </div>
   ) : (
