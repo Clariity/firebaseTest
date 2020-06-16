@@ -22,7 +22,7 @@ function Add() {
   const [showErrorModal, setShowErrorModal] = useState(false);
   const [newRecipe, setNewRecipe] = useState({
     name: "",
-    servings: 0,
+    servings: 1,
     cookingTime: 0,
     ingredients: [
       {
@@ -135,7 +135,7 @@ function Add() {
   const resetRecipe = () => {
     setNewRecipe({
       name: "",
-      servings: 0,
+      servings: 1,
       cookingTime: 0,
       ingredients: [
         {

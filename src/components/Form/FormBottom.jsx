@@ -82,6 +82,7 @@ function FormBottom({
           onChange={setTagsSelected}
           options={state.userData.tags !== undefined ? state.userData.tags : []}
           placeholder="Select Tags"
+          maxResults={5}
           selected={tagsSelected}
         />
       </div>

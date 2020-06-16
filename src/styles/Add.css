@@ -95,9 +95,19 @@ label {
 .ingredient-label-container > label:nth-child(2) {
   width: 20%;
 }
-.ingredient-inputs > input:last-child,
-.ingredient-label-container > label:last-child {
-  width: 65%;
+.ingredient-inputs > input:nth-child(3),
+.ingredient-label-container > label:nth-child(3) {
+  width: 60%;
+}
+
+.ingredient-inputs-delete {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.ingredient-inputs-delete-button:hover {
+  cursor: pointer;
+  color: #353535;
 }
 
 .ingredient-label-container > label {

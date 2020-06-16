@@ -8,6 +8,20 @@ function FormTop({
   setPhotoURL,
   handleChange,
 }) {
+  const handleServingsChange = (event) => {
+    if (event.target.value === "") return;
+    let multiplyer = event.target.value / newRecipe.servings;
+    let ingredients = [...newRecipe.ingredients];
+    for (let i in ingredients) {
+      ingredients[i].amount = ingredients[i].amount * multiplyer;
+    }
+    setNewRecipe({
+      ...newRecipe,
+      servings: event.target.value,
+      ingredients: ingredients,
+    });
+  };
+
   function handleIngredientsChange(event, index) {
     let ingredients = [...newRecipe.ingredients];
     let ingredient = {
@@ -48,6 +62,15 @@ function FormTop({
     });
   };
 
+  function deleteIngredientRow(index) {
+    let ingredients = [...newRecipe.ingredients];
+    ingredients.splice(index, 1);
+    setNewRecipe({
+      ...newRecipe,
+      ingredients: ingredients,
+    });
+  }
+
   return (
     <div className="form-top">
       <div className="form-top-data">
@@ -68,7 +91,8 @@ function FormTop({
             <input
               type="number"
               name="servings"
-              onChange={handleChange}
+              min="1"
+              onChange={handleServingsChange}
               // onBlur={handleBlur}
               value={newRecipe.servings}
               autoComplete="off"
@@ -103,6 +127,7 @@ function FormTop({
                   <input
                     type="number"
                     name="amount"
+                    min="1"
                     onChange={(event) => handleIngredientsChange(event, index)}
                     // onBlur={handleBlur}
                     value={ing.amount}
@@ -124,6 +149,16 @@ function FormTop({
                     value={ing.ingredient}
                     autoComplete="random"
                   />
+                  {newRecipe.ingredients.length > 1 && (
+                    <div className="ingredient-inputs-delete ">
+                      <i
+                        className="material-icons ingredient-inputs-delete-button"
+                        onClick={() => deleteIngredientRow(index)}
+                      >
+                        delete
+                      </i>
+                    </div>
+                  )}
                 </div>
               );
             })}

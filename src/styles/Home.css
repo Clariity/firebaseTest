@@ -27,6 +27,7 @@
   object-fit: contain;
   border-color: #7f7f7f;
   border: solid 1px;
+  background-color: #222a35;
 }
 
 .list-item-details {

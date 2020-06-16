@@ -134,6 +134,7 @@ function Search() {
               allowNew={true}
               options={recipeNames}
               placeholder="Search by recipe name"
+              maxResults={8}
               selected={[]}
             />
           ) : (
@@ -146,6 +147,7 @@ function Search() {
               }
               placeholder="Select by recipe tags"
               selected={tagsSelected}
+              maxResults={8}
             />
           )}
           {searchType === "t" && (
