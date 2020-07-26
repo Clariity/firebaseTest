@@ -9,11 +9,20 @@ function FormTop({
   handleChange,
 }) {
   const handleServingsChange = (event) => {
-    if (event.target.value === "") return;
+    if (event.target.value === "" || newRecipe.servings === "") {
+      setNewRecipe({
+        ...newRecipe,
+        servings: event.target.value,
+      });
+      return;
+    }
     let multiplyer = event.target.value / newRecipe.servings;
     let ingredients = [...newRecipe.ingredients];
     for (let i in ingredients) {
-      ingredients[i].amount = ingredients[i].amount * multiplyer;
+      ingredients[i].amount = (ingredients[i].amount * multiplyer).toFixed(2);
+      console.log(ingredients[i].amount % 1 === 0);
+      if (ingredients[i].amount % 1 === 0)
+        ingredients[i].amount = parseInt(ingredients[i].amount);
     }
     setNewRecipe({
       ...newRecipe,

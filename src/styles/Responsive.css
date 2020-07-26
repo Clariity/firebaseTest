@@ -2,6 +2,7 @@
   .list-item-image {
     height: 150px;
     width: 150px;
+    min-width: 150px;
   }
 
   .navbar {
@@ -49,7 +50,7 @@
   .list-item {
     flex-direction: column;
     align-items: center;
-    width: unset;
+    /* width: unset; */
     max-width: 90vw;
   }
   .list-item-details {

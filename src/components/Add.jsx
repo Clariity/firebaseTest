@@ -247,24 +247,32 @@ function Add() {
   // Once photo is uploaded, remote URL with be returned, upload recipe with remote URL
   const handleUploadCompletion = (uploadTask) => {
     uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
+      console.log(downloadURL);
       uploadRecipe(downloadURL);
     });
   };
 
   // Upload photo to firestore, name it as recipe name
   const uploadPhoto = () => {
-    const uploadTask = state.firebaseApp
-      .storage()
-      .ref()
-      .child("recipe-images/" + newRecipe.name.replace(/\s/g, "").toLowerCase()) //prefix state.user.uid for multiple users
-      .put(selectedFile);
+    if (selectedFile === null && photoURL === null) {
+      // Edit has been made but no picture uploaded
+      uploadRecipe();
+    } else {
+      const uploadTask = state.firebaseApp
+        .storage()
+        .ref()
+        .child(
+          "recipe-images/" + newRecipe.name.replace(/\s/g, "").toLowerCase()
+        ) //prefix state.user.uid for multiple users
+        .put(selectedFile);
 
-    uploadTask.on(
-      "state_changed",
-      handleUploadProgress,
-      handleUploadError,
-      () => handleUploadCompletion(uploadTask)
-    );
+      uploadTask.on(
+        "state_changed",
+        handleUploadProgress,
+        handleUploadError,
+        () => handleUploadCompletion(uploadTask)
+      );
+    }
   };
 
   const handleUpload = () => {
@@ -303,7 +311,7 @@ function Add() {
         showOverwriteModal={showOverwriteModal}
         setShowOverwriteModal={setShowOverwriteModal}
         recipeName={newRecipe.name}
-        uploadRecipe={uploadRecipe}
+        uploadRecipe={uploadPhoto} // intentionally uploading photo incase photo needs to be updated on overwrite
       />
       <DeleteModal
         showDeleteModal={showDeleteModal}

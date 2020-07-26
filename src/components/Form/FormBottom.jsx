@@ -32,6 +32,15 @@ function FormBottom({
     });
   };
 
+  function deleteInstructionRow(index) {
+    let instructions = [...newRecipe.instructions];
+    instructions.splice(index, 1);
+    setNewRecipe({
+      ...newRecipe,
+      instructions: instructions,
+    });
+  }
+
   return (
     <div className="form-bottom">
       <div className="input-label-container">
@@ -50,6 +59,16 @@ function FormBottom({
                     value={newRecipe.instructions[index]}
                   />
                   <span className="unit-left">{index + 1 + "."}</span>
+                  {newRecipe.instructions.length > 1 && (
+                    <div className="ingredient-inputs-delete ">
+                      <i
+                        className="material-icons ingredient-inputs-delete-button"
+                        onClick={() => deleteInstructionRow(index)}
+                      >
+                        delete
+                      </i>
+                    </div>
+                  )}
                 </div>
               );
             })}
